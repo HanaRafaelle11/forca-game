@@ -39,15 +39,16 @@ h1 {
 
 #hangman {
     font-size: 18px;
+    white-space: pre;
+    margin-bottom: 10px;
+}
+
+#attempts {
     margin-bottom: 10px;
 }
 
 #wrong-letters {
     color: red;
-    margin-bottom: 10px;
-}
-
-#attempts {
     margin-bottom: 10px;
 }
 

@@ -23,7 +23,6 @@ document.addEventListener('DOMContentLoaded', () => {
     let attempts = 6;
     let guessedLetters = [];
     let wrongLetters = [];
-
     document.getElementById('hint-text').textContent = selectedCategory;
 
     function displayWord() {
@@ -37,71 +36,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function displayHangman() {
         const stages = [
-            `
-  -----
-  |   |
-  |   
-  |  
-  |   
-  |
-  ========
-            `,
-            `
-  -----
-  |   |
-  |   O
-  |  
-  |   
-  |
-  ========
-            `,
-            `
-  -----
-  |   |
-  |   O
-  |   |
-  |   
-  |
-  ========
-            `,
-            `
-  -----
-  |   |
-  |   O
-  |  /|
-  |   
-  |
-  ========
-            `,
-            `
-  -----
-  |   |
-  |   O
-  |  /|\\
-  |   
-  |
-  ========
-            `,
-            `
-  -----
-  |   |
-  |   O
-  |  /|\\
-  |  / 
-  |
-  ========
-            `,
-            `
-  -----
-  |   |
-  |   O
-  |  /|\\
-  |  / \\
-  |
-  ========
-            `
+            ` ----- \n |     \n |     \n |     \n |     \n |     \n ======== `,
+            ` ----- \n |     \n |     \n |     \n |     \n |     \n |     \n |     \n ======== `,
+            ` ----- \n |     \n |     \n |     \n |     \n |     \n |     \n |     \n ======== `,
+            ` ----- \n |     \n |     \n |     \n |     \n |     \n |     \n |     \n ======== `,
+            ` ----- \n |     \n |     \n |     \n |     \n |     \n |     \n |     \n ======== `,
+            ` ----- \n |     \n |     \n |     \n |     \n |     \n |     \n |     \n ======== `,
+            ` ----- \n |     \n |     \n |     \n |     \n |     \n |     \n |     \n ======== `
         ];
-        document.getElementById('hangman').textContent = stages[6 - attempts];
+        const hangmanStages = [
+            ` ----- \n |     \n |     \n |     \n |     \n |     \n |     \n ======== `,
+            ` ----- \n |     \n |     \n |     \n |     \n |     \n |     \n |     \n | O \n ======== `,
+            ` ----- \n |     \n |     \n |     \n |     \n |     \n |     \n |     \n | O \n | | \n ======== `,
+            ` ----- \n |     \n |     \n |     \n |     \n |     \n |     \n |     \n | O \n | | \n | / \n ======== `,
+            ` ----- \n |     \n |     \n |     \n |     \n |     \n |     \n |     \n | O \n | | \n | / \\ \n ======== `,
+            ` ----- \n |     \n |     \n |     \n |     \n |     \n |     \n |     \n | O \n | | \n | / \\ \n | / \n ======== `,
+            ` ----- \n |     \n |     \n |     \n |     \n |     \n |     \n |     \n | O \n | | \n | / \\ \n | / \\ \n ======== `
+        ];
+        document.getElementById('hangman').innerHTML = hangmanStages[6 - attempts];
     }
 
     function displayKeyboard() {
@@ -181,7 +133,6 @@ document.addEventListener('DOMContentLoaded', () => {
         attempts = 6;
         guessedLetters = [];
         wrongLetters = [];
-
         document.getElementById('hint-text').textContent = selectedCategory;
         document.getElementById('message').textContent = '';
         displayWord();
