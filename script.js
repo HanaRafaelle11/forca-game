@@ -1,38 +1,30 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const words = [
-        'cachorro', 'gato', 'elefante', 'girafa', 'tigre', 'leão', 'macaco', 'urso', 'baleia', 'tubarão',
-        'passarinho', 'tartaruga', 'cavalo', 'peixe', 'cobra', 'sapo', 'rato', 'pato', 'galinha', 'boi'
-    ];
-    const hints = {
-        cachorro: 'animal',
-        gato: 'animal',
-        elefante: 'animal',
-        girafa: 'animal',
-        tigre: 'animal',
-        leão: 'animal',
-        macaco: 'animal',
-        urso: 'animal',
-        baleia: 'animal',
-        tubarão: 'animal',
-        passarinho: 'animal',
-        tartaruga: 'animal',
-        cavalo: 'animal',
-        peixe: 'animal',
-        cobra: 'animal',
-        sapo: 'animal',
-        rato: 'animal',
-        pato: 'animal',
-        galinha: 'animal',
-        boi: 'animal'
+    const words = {
+        'Animais': ['cachorro', 'gato', 'elefante', 'girafa', 'tigre', 'leão', 'macaco', 'urso', 'baleia', 'tubarão', 'passarinho', 'tartaruga', 'cavalo', 'peixe', 'cobra', 'sapo', 'rato', 'pato', 'galinha', 'boi'],
+        'Comidas e Bebidas': ['maçã', 'banana', 'cenoura', 'bolo', 'feijoada', 'lasanha', 'pão', 'pizza', 'arroz', 'feijão', 'suco', 'refrigerante'],
+        'Cores': ['vermelho', 'azul', 'amarelo', 'verde', 'laranja', 'roxo', 'rosa', 'preto', 'branco', 'cinza', 'marrom'],
+        'Cidades e Países': ['são paulo', 'rio de janeiro', 'brasil', 'argentina', 'alemanha', 'frança', 'portugal', 'japão', 'china', 'egito', 'londres'],
+        'Profissões': ['médico', 'advogado', 'professor', 'engenheiro', 'enfermeiro', 'policial', 'bombeiro', 'dentista', 'arquiteto'],
+        'Esportes': ['futebol', 'basquete', 'vôlei', 'natação', 'tênis', 'boxe', 'ciclismo', 'corrida', 'surfe'],
+        'Marcas': ['nike', 'adidas', 'apple', 'samsung', 'honda', 'toyota', 'ford', 'chevrolet', 'puma', 'gucci', 'prada'],
+        'Famosos': ['beyoncé', 'brad pitt', 'angelina jolie', 'madonna', 'michael jackson', 'elvis presley', 'bill gates', 'steve jobs'],
+        'Personagens': ['batman', 'superman', 'spiderman', 'harry potter', 'hermione', 'frodo', 'aragorn', 'sherlock holmes'],
+        'História': ['napoleão', 'cleópatra', 'hitler', 'gandhi', 'martin luther king', 'abraham lincoln', 'joana d\'arc'],
+        'Ciência': ['física', 'química', 'biologia', 'astronomia', 'geologia', 'genética', 'evolução', 'gravidade'],
+        'Geografia': ['atlântico', 'pacífico', 'himalaia', 'everest', 'nilo', 'amazonas', 'sahara', 'andés'],
+        'Mitologia': ['zeus', 'hera', 'poseidon', 'hades', 'apolo', 'atena', 'hercules', 'perseu'],
+        'Festa Junina': ['canjica', 'pamonha', 'quadrilha', 'pescaria', 'fogos', 'balão', 'milho'],
+        'Natal': ['papai noel', 'presente', 'árvore', 'presépio', 'panetone', 'ceia', 'sino', 'estrela']
     };
 
-    let selectedWord = words[Math.floor(Math.random() * words.length)];
-    let hint = hints[selectedWord];
+    const categories = Object.keys(words);
+    let selectedCategory = categories[Math.floor(Math.random() * categories.length)];
+    let selectedWord = words[selectedCategory][Math.floor(Math.random() * words[selectedCategory].length)];
     let attempts = 6;
     let guessedLetters = [];
     let wrongLetters = [];
 
-    document.getElementById('hint-text').textContent = hint;
+    document.getElementById('hint-text').textContent = selectedCategory;
 
     function displayWord() {
         const display = selectedWord.split('').map(letter => (guessedLetters.includes(letter) ? letter : '_')).join(' ');
@@ -184,13 +176,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function resetGame() {
-        selectedWord = words[Math.floor(Math.random() * words.length)];
-        hint = hints[selectedWord];
+        selectedCategory = categories[Math.floor(Math.random() * categories.length)];
+        selectedWord = words[selectedCategory][Math.floor(Math.random() * words[selectedCategory].length)];
         attempts = 6;
         guessedLetters = [];
         wrongLetters = [];
 
-        document.getElementById('hint-text').textContent = hint;
+        document.getElementById('hint-text').textContent = selectedCategory;
         document.getElementById('message').textContent = '';
         displayWord();
         displayHangman();
