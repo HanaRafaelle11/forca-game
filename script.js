@@ -1,16 +1,29 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const words = ['dog', 'cat', 'elephant', 'giraffe', 'tiger', 'lion', 'monkey', 'bear', 'whale', 'shark'];
+    const words = [
+        'cachorro', 'gato', 'elefante', 'girafa', 'tigre', 'leão', 'macaco', 'urso', 'baleia', 'tubarão',
+        'passarinho', 'tartaruga', 'cavalo', 'peixe', 'cobra', 'sapo', 'rato', 'pato', 'galinha', 'boi'
+    ];
     const hints = {
-        dog: 'animal',
-        cat: 'animal',
-        elephant: 'animal',
-        giraffe: 'animal',
-        tiger: 'animal',
-        lion: 'animal',
-        monkey: 'animal',
-        bear: 'animal',
-        whale: 'animal',
-        shark: 'animal'
+        cachorro: 'animal',
+        gato: 'animal',
+        elefante: 'animal',
+        girafa: 'animal',
+        tigre: 'animal',
+        leão: 'animal',
+        macaco: 'animal',
+        urso: 'animal',
+        baleia: 'animal',
+        tubarão: 'animal',
+        passarinho: 'animal',
+        tartaruga: 'animal',
+        cavalo: 'animal',
+        peixe: 'animal',
+        cobra: 'animal',
+        sapo: 'animal',
+        rato: 'animal',
+        pato: 'animal',
+        galinha: 'animal',
+        boi: 'animal'
     };
 
     let selectedWord = words[Math.floor(Math.random() * words.length)];
