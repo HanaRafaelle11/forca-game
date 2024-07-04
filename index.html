@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,13 +9,15 @@
 <body>
     <div class="container">
         <h1>Jogo da Forca</h1>
-        <p id="hint">Dica: <span id="hint-text">linguagem de programação</span></p>
-        <p id="word"></p>
+        <div id="hint">
+            Dica: <span id="hint-text"></span>
+        </div>
+        <div id="word">_ _ _ _ _</div>
         <div class="hangman-container">
             <pre id="hangman"></pre>
         </div>
-        <p id="wrong-letters">Letras erradas:</p>
-        <p id="attempts">Tentativas restantes: <span id="attempts-count">6</span></p>
+        <div id="attempts">Tentativas restantes: <span id="attempts-count">6</span></div>
+        <div id="wrong-letters"></div>
         <div id="keyboard"></div>
         <div id="message"></div>
     </div>
