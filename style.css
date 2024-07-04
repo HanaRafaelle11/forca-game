@@ -1,0 +1,36 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background-color: #f0f0f0;
+    padding: 20px;
+}
+
+h1 {
+    color: #333;
+}
+
+#dica {
+    margin: 20px;
+    font-size: 1.2em;
+}
+
+#palavra {
+    font-size: 2em;
+    margin: 20px;
+}
+
+#letrasErradas {
+    color: red;
+    margin: 10px;
+}
+
+#letrasDisponiveis {
+    margin: 20px;
+}
+
+button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    font-size: 1em;
+    cursor: pointer;
+}
