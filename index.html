@@ -1,29 +1,26 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Jogo da Forca</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jogo da Forca</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div id="game-container">
-    <h1>Jogo da Forca</h1>
-    <div id="hint-text">Categoria: Ciência</div>
-    <div id="word">_ _ _ _ _ _ _ _ _</div>
-    <div id="hangman">
-      +---+<br>
-      |   |<br>
-      |   <br>
-      |   <br>
-      |   <br>
-      |   <br>
-      =========
+    <div class="container">
+        <h1>Jogo da Forca</h1>
+        <div id="hint-container">
+            <span id="hint-text">Categoria</span>
+        </div>
+        <div id="word">_ _ _ _ _ _ _ _ _ _</div>
+        <div id="hangman"></div>
+        <div id="keyboard"></div>
+        <div id="attempts-container">
+            <span>Tentativas restantes:</span> <span id="attempts-count">6</span>
+        </div>
+        <div id="wrong-letters">Letras erradas:</div>
+        <div id="message"></div>
     </div>
-    <div id="attempts-count">Tentativas restantes: 6</div>
-    <div id="wrong-letters">Letras erradas:</div>
-    <div id="keyboard"></div>
-  </div>
-  <script src="script.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
