@@ -129,13 +129,4 @@ document.addEventListener('DOMContentLoaded', () => {
     displayWord();
     displayHangman();
     displayKeyboard();
-
-    document.getElementById('guess-button').addEventListener('click', () => {
-        const letter = prompt('Digite uma letra:');
-        if (letter && letter.length === 1 && /^[a-z]$/i.test(letter)) {
-            handleGuess(letter.toLowerCase());
-        } else {
-            alert('Digite uma letra válida.');
-        }
-    });
 });

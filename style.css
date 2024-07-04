@@ -32,6 +32,11 @@ h1 {
     margin-bottom: 10px;
 }
 
+.hangman-container {
+    display: flex;
+    justify-content: center;
+}
+
 #hangman {
     font-family: monospace;
     white-space: pre;
@@ -41,6 +46,7 @@ h1 {
 
 #wrong-letters {
     margin-bottom: 10px;
+    color: red;
 }
 
 #attempts {
@@ -50,6 +56,9 @@ h1 {
 
 #keyboard {
     margin-bottom: 10px;
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    gap: 5px;
 }
 
 button {
