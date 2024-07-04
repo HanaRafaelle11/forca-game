@@ -1,69 +1,154 @@
-// Função para iniciar o jogo da forca
-function iniciarJogo() {
-    const palavra = 'python';
-    const dica = 'linguagem de programação';
-    const letrasErradas = [];
-    const letrasCorretas = [];
-    let tentativasRestantes = 6;
+// script.js
+let palavra = '';
+let categoria = '';
+let letrasAdvinhadas = new Set();
+let tentativas = 6;
+let letrasErradas = new Set();
 
-    // Atualiza a dica
-    document.getElementById('dica').innerText = `Dica: ${dica}`;
+const palavrasECategorias = [
+    ['python', 'linguagem de programação'],
+    ['programacao', 'linguagem de programação'],
+    ['desenvolvimento', 'profissão'],
+    ['inteligencia', 'conceito'],
+    ['artificial', 'conceito'],
+    ['machine', 'tecnologia'],
+    ['learning', 'tecnologia'],
+    ['tigre', 'animal'],
+    ['pizza', 'comida'],
+    ['são_paulo', 'lugar'],
+    ['paris', 'lugar'],
+    ['gato', 'animal'],
+    ['cachorro', 'animal'],
+    ['hamburguer', 'comida'],
+    ['sushi', 'comida'],
+    ['rio_de_janeiro', 'lugar'],
+];
 
-    // Atualiza o display da palavra com espaços para letras não adivinhadas
-    function atualizarPalavra() {
-        const palavraElement = document.getElementById('palavra');
-        palavraElement.innerHTML = palavra.split('').map(letra => {
-            return (letrasCorretas.includes(letra)) ? letra : '_';
-        }).join(' ');
-    }
-
-    // Atualiza as letras erradas
-    function atualizarLetrasErradas() {
-        document.getElementById('letrasErradas').innerText = `Letras erradas: ${letrasErradas.join(', ')}`;
-    }
-
-    // Atualiza as letras disponíveis
-    function atualizarLetrasDisponiveis() {
-        const letrasDisponiveis = 'abcdefghijklmnopqrstuvwxyz';
-        const letrasDisponiveisElement = document.getElementById('letrasDisponiveis');
-        letrasDisponiveisElement.innerHTML = letrasDisponiveis.split('').map(letra => {
-            return `<button onclick="adivinharLetra('${letra}')">${letra}</button>`;
-        }).join(' ');
-    }
-
-    // Função chamada ao clicar em uma letra
-    window.adivinharLetra = function(letra) {
-        if (palavra.includes(letra)) {
-            letrasCorretas.push(letra);
-        } else {
-            letrasErradas.push(letra);
-            tentativasRestantes--;
-        }
-
-        atualizarPalavra();
-        atualizarLetrasErradas();
-        atualizarLetrasDisponiveis();
-
-        if (tentativasRestantes === 0) {
-            alert('Você perdeu! A palavra era ' + palavra);
-            document.getElementById('tentarNovamente').style.display = 'block';
-        } else if (palavra.split('').every(letra => letrasCorretas.includes(letra))) {
-            alert('Parabéns, você ganhou!');
-            document.getElementById('tentarNovamente').style.display = 'block';
-        }
-    };
-
-    // Inicializa o jogo
-    atualizarPalavra();
-    atualizarLetrasDisponiveis();
-    atualizarLetrasErradas();
-    document.getElementById('tentarNovamente').style.display = 'none';
-
-    // Configura o botão "Tentar Novamente"
-    document.getElementById('tentarNovamente').onclick = () => {
-        window.location.reload();
-    };
+function escolherPalavraECategoria() {
+    const index = Math.floor(Math.random() * palavrasECategorias.length);
+    [palavra, categoria] = palavrasECategorias[index];
 }
 
-// Inicia o jogo quando a página carrega
-window.onload = iniciarJogo;
+function exibirPalavra() {
+    return palavra.split('').map(letra => (letrasAdvinhadas.has(letra) ? letra : '_')).join(' ');
+}
+
+function exibirBoneco() {
+    const desenhos = [
+        `
+          -----
+          |   |
+              |
+              |
+              |
+              |
+        =========
+        `,
+        `
+          -----
+          |   |
+          O   |
+              |
+              |
+              |
+        =========
+        `,
+        `
+          -----
+          |   |
+          O   |
+          |   |
+              |
+              |
+        =========
+        `,
+        `
+          -----
+          |   |
+          O   |
+         /|   |
+              |
+              |
+        =========
+        `,
+        `
+          -----
+          |   |
+          O   |
+         /|\\  |
+              |
+              |
+        =========
+        `,
+        `
+          -----
+          |   |
+          O   |
+         /|\\  |
+         /    |
+              |
+        =========
+        `,
+        `
+          -----
+          |   |
+          O   |
+         /|\\  |
+         / \\  |
+              |
+        =========
+        `,
+    ];
+
+    document.getElementById('boneco').textContent = desenhos[6 - tentativas];
+}
+
+function atualizarTela() {
+    document.getElementById('dica').textContent = `Dica: A palavra é um ${categoria}.`;
+    document.getElementById('palavra').textContent = exibirPalavra();
+    document.getElementById('letras-erradas').textContent = `Letras erradas: ${Array.from(letrasErradas).join(' ')}`;
+    document.getElementById('letras').innerHTML = '';
+
+    for (let letra of 'abcdefghijklmnopqrstuvwxyz') {
+        const button = document.createElement('button');
+        button.textContent = letra;
+        button.onclick = () => tentarLetra(letra);
+        document.getElementById('letras').appendChild(button);
+    }
+
+    exibirBoneco();
+
+    if (tentativas === 0) {
+        alert(`Você perdeu! A palavra era: ${palavra}`);
+        document.getElementById('tentar-novamente').style.display = 'block';
+    } else if (!exibirPalavra().includes('_')) {
+        alert('Parabéns! Você ganhou!');
+        document.getElementById('tentar-novamente').style.display = 'block';
+    } else {
+        document.getElementById('tentar-novamente').style.display = 'none';
+    }
+}
+
+function tentarLetra(letra) {
+    if (letrasAdvinhadas.has(letra) || letrasErradas.has(letra)) return;
+
+    if (palavra.includes(letra)) {
+        letrasAdvinhadas.add(letra);
+    } else {
+        letrasErradas.add(letra);
+        tentativas--;
+    }
+
+    atualizarTela();
+}
+
+function tentarNovamente() {
+    escolherPalavraECategoria();
+    letrasAdvinhadas.clear();
+    letrasErradas.clear();
+    tentativas = 6;
+    atualizarTela();
+}
+
+escolherPalavraECategoria();
+atualizarTela();

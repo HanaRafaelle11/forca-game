@@ -1,19 +1,21 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jogo da Forca</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h1>Jogo da Forca</h1>
-    <div id="dica">Dica: Linguagem de programação</div>
-    <div id="palavra"></div>
-    <div id="letrasErradas"></div>
-    <div id="tentativasRestantes"></div>
-    <div id="letrasDisponiveis"></div>
-    <button id="tentarNovamente">Tentar Novamente</button>
+    <div class="container">
+        <h1>Jogo da Forca</h1>
+        <div id="dica"></div>
+        <div id="palavra"></div>
+        <div id="boneco"></div>
+        <div id="letras-erradas"></div>
+        <button id="tentar-novamente" onclick="tentarNovamente()">Tentar Novamente</button>
+        <div id="letras"></div>
+    </div>
     <script src="script.js"></script>
 </body>
 </html>
