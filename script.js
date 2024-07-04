@@ -107,6 +107,7 @@ function atualizarTela() {
     document.getElementById('dica').textContent = `Dica: A palavra é um ${categoria}.`;
     document.getElementById('palavra').textContent = exibirPalavra();
     document.getElementById('letras-erradas').textContent = `Letras erradas: ${Array.from(letrasErradas).join(' ')}`;
+    document.getElementById('letras-erradas').style.color = 'red';  // Letras erradas em vermelho
     document.getElementById('letras').innerHTML = '';
 
     for (let letra of 'abcdefghijklmnopqrstuvwxyz') {
