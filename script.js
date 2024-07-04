@@ -1,155 +1,141 @@
-// script.js
-let palavra = '';
-let categoria = '';
-let letrasAdvinhadas = new Set();
-let tentativas = 6;
-let letrasErradas = new Set();
+document.addEventListener('DOMContentLoaded', () => {
+    const words = ['javascript', 'python', 'java', 'ruby', 'html', 'css'];
+    const hints = {
+        javascript: 'linguagem de programação',
+        python: 'linguagem de programação',
+        java: 'linguagem de programação',
+        ruby: 'linguagem de programação',
+        html: 'linguagem de marcação',
+        css: 'linguagem de estilo'
+    };
 
-const palavrasECategorias = [
-    ['python', 'linguagem de programação'],
-    ['programacao', 'linguagem de programação'],
-    ['desenvolvimento', 'profissão'],
-    ['inteligencia', 'conceito'],
-    ['artificial', 'conceito'],
-    ['machine', 'tecnologia'],
-    ['learning', 'tecnologia'],
-    ['tigre', 'animal'],
-    ['pizza', 'comida'],
-    ['são_paulo', 'lugar'],
-    ['paris', 'lugar'],
-    ['gato', 'animal'],
-    ['cachorro', 'animal'],
-    ['hamburguer', 'comida'],
-    ['sushi', 'comida'],
-    ['rio_de_janeiro', 'lugar'],
-];
+    let selectedWord = words[Math.floor(Math.random() * words.length)];
+    let hint = hints[selectedWord];
+    let attempts = 6;
+    let guessedLetters = [];
+    let wrongLetters = [];
 
-function escolherPalavraECategoria() {
-    const index = Math.floor(Math.random() * palavrasECategorias.length);
-    [palavra, categoria] = palavrasECategorias[index];
-}
+    document.getElementById('hint-text').textContent = hint;
 
-function exibirPalavra() {
-    return palavra.split('').map(letra => (letrasAdvinhadas.has(letra) ? letra : '_')).join(' ');
-}
-
-function exibirBoneco() {
-    const desenhos = [
-        `
-          -----
-          |   |
-              |
-              |
-              |
-              |
-        =========
-        `,
-        `
-          -----
-          |   |
-          O   |
-              |
-              |
-              |
-        =========
-        `,
-        `
-          -----
-          |   |
-          O   |
-          |   |
-              |
-              |
-        =========
-        `,
-        `
-          -----
-          |   |
-          O   |
-         /|   |
-              |
-              |
-        =========
-        `,
-        `
-          -----
-          |   |
-          O   |
-         /|\\  |
-              |
-              |
-        =========
-        `,
-        `
-          -----
-          |   |
-          O   |
-         /|\\  |
-         /    |
-              |
-        =========
-        `,
-        `
-          -----
-          |   |
-          O   |
-         /|\\  |
-         / \\  |
-              |
-        =========
-        `,
-    ];
-
-    document.getElementById('boneco').textContent = desenhos[6 - tentativas];
-}
-
-function atualizarTela() {
-    document.getElementById('dica').textContent = `Dica: A palavra é um ${categoria}.`;
-    document.getElementById('palavra').textContent = exibirPalavra();
-    document.getElementById('letras-erradas').textContent = `Letras erradas: ${Array.from(letrasErradas).join(' ')}`;
-    document.getElementById('letras-erradas').style.color = 'red';  // Letras erradas em vermelho
-    document.getElementById('letras').innerHTML = '';
-
-    for (let letra of 'abcdefghijklmnopqrstuvwxyz') {
-        const button = document.createElement('button');
-        button.textContent = letra;
-        button.onclick = () => tentarLetra(letra);
-        document.getElementById('letras').appendChild(button);
+    function displayWord() {
+        const display = selectedWord.split('').map(letter => (guessedLetters.includes(letter) ? letter : '_')).join(' ');
+        document.getElementById('word').textContent = display;
+        if (!display.includes('_')) {
+            document.getElementById('message').textContent = 'Parabéns, você ganhou!';
+        }
     }
 
-    exibirBoneco();
-
-    if (tentativas === 0) {
-        alert(`Você perdeu! A palavra era: ${palavra}`);
-        document.getElementById('tentar-novamente').style.display = 'block';
-    } else if (!exibirPalavra().includes('_')) {
-        alert('Parabéns! Você ganhou!');
-        document.getElementById('tentar-novamente').style.display = 'block';
-    } else {
-        document.getElementById('tentar-novamente').style.display = 'none';
+    function displayHangman() {
+        const stages = [
+            `
+  -----
+  |   |
+  |   
+  |  
+  |   
+  |
+  ========
+            `,
+            `
+  -----
+  |   |
+  |   O
+  |  
+  |   
+  |
+  ========
+            `,
+            `
+  -----
+  |   |
+  |   O
+  |   |
+  |   
+  |
+  ========
+            `,
+            `
+  -----
+  |   |
+  |   O
+  |  /|
+  |   
+  |
+  ========
+            `,
+            `
+  -----
+  |   |
+  |   O
+  |  /|\\
+  |   
+  |
+  ========
+            `,
+            `
+  -----
+  |   |
+  |   O
+  |  /|\\
+  |  / 
+  |
+  ========
+            `,
+            `
+  -----
+  |   |
+  |   O
+  |  /|\\
+  |  / \\
+  |
+  ========
+            `
+        ];
+        document.getElementById('hangman').textContent = stages[6 - attempts];
     }
-}
 
-function tentarLetra(letra) {
-    if (letrasAdvinhadas.has(letra) || letrasErradas.has(letra)) return;
-
-    if (palavra.includes(letra)) {
-        letrasAdvinhadas.add(letra);
-    } else {
-        letrasErradas.add(letra);
-        tentativas--;
+    function displayKeyboard() {
+        const keyboardContainer = document.getElementById('keyboard');
+        keyboardContainer.innerHTML = '';
+        'abcdefghijklmnopqrstuvwxyz'.split('').forEach(letter => {
+            const button = document.createElement('button');
+            button.textContent = letter;
+            button.addEventListener('click', () => handleGuess(letter));
+            keyboardContainer.appendChild(button);
+        });
     }
 
-    atualizarTela();
-}
+    function handleGuess(letter) {
+        if (selectedWord.includes(letter)) {
+            guessedLetters.push(letter);
+        } else {
+            wrongLetters.push(letter);
+            attempts--;
+        }
+        updateGame();
+    }
 
-function tentarNovamente() {
-    escolherPalavraECategoria();
-    letrasAdvinhadas.clear();
-    letrasErradas.clear();
-    tentativas = 6;
-    atualizarTela();
-}
+    function updateGame() {
+        displayWord();
+        displayHangman();
+        document.getElementById('attempts-count').textContent = attempts;
+        document.getElementById('wrong-letters').textContent = `Letras erradas: ${wrongLetters.join(', ')}`;
+        if (attempts === 0) {
+            document.getElementById('message').textContent = `Você perdeu! A palavra era "${selectedWord}".`;
+            document.querySelectorAll('#keyboard button').forEach(button => button.disabled = true);
+        }
+    }
 
-escolherPalavraECategoria();
-atualizarTela();
+    displayWord();
+    displayHangman();
+    displayKeyboard();
+
+    document.getElementById('guess-button').addEventListener('click', () => {
+        const letter = prompt('Digite uma letra:');
+        if (letter && letter.length === 1 && /^[a-z]$/i.test(letter)) {
+            handleGuess(letter.toLowerCase());
+        } else {
+            alert('Digite uma letra válida.');
+        }
+    });
+});

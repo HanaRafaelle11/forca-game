@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,12 +9,16 @@
 <body>
     <div class="container">
         <h1>Jogo da Forca</h1>
-        <div id="dica"></div>
-        <div id="palavra"></div>
-        <div id="boneco"></div>
-        <div id="letras-erradas"></div>
-        <button id="tentar-novamente" onclick="tentarNovamente()">Tentar Novamente</button>
-        <div id="letras"></div>
+        <p id="hint">Dica: <span id="hint-text">linguagem de programação</span></p>
+        <p id="word"></p>
+        <div class="hangman-container">
+            <pre id="hangman"></pre>
+        </div>
+        <p id="wrong-letters">Letras erradas:</p>
+        <p id="attempts">Tentativas restantes: <span id="attempts-count">6</span></p>
+        <div id="keyboard"></div>
+        <button id="guess-button">Tentar</button>
+        <div id="message"></div>
     </div>
     <script src="script.js"></script>
 </body>
