@@ -40,6 +40,8 @@ h1 {
     white-space: pre;
     font-size: 1.5em;
     margin-bottom: 20px;
+    text-align: left; /* Mantenha o alinhamento à esquerda para a estrutura */
+    display: inline-block; /* Garante que o boneco não ocupe a largura total */
 }
 
 #letras-erradas {
