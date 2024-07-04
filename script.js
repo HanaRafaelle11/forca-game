@@ -22,6 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('word').textContent = display;
         if (!display.includes('_')) {
             document.getElementById('message').textContent = 'Parabéns, você ganhou!';
+            disableAllButtons();
         }
     }
 
@@ -100,17 +101,20 @@ document.addEventListener('DOMContentLoaded', () => {
         'abcdefghijklmnopqrstuvwxyz'.split('').forEach(letter => {
             const button = document.createElement('button');
             button.textContent = letter;
-            button.addEventListener('click', () => handleGuess(letter));
+            button.addEventListener('click', () => handleGuess(letter, button));
             keyboardContainer.appendChild(button);
         });
     }
 
-    function handleGuess(letter) {
+    function handleGuess(letter, button) {
+        button.disabled = true;
         if (selectedWord.includes(letter)) {
             guessedLetters.push(letter);
         } else {
-            wrongLetters.push(letter);
-            attempts--;
+            if (!wrongLetters.includes(letter)) {
+                wrongLetters.push(letter);
+                attempts--;
+            }
         }
         updateGame();
     }
@@ -122,8 +126,12 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('wrong-letters').textContent = `Letras erradas: ${wrongLetters.join(', ')}`;
         if (attempts === 0) {
             document.getElementById('message').textContent = `Você perdeu! A palavra era "${selectedWord}".`;
-            document.querySelectorAll('#keyboard button').forEach(button => button.disabled = true);
+            disableAllButtons();
         }
+    }
+
+    function disableAllButtons() {
+        document.querySelectorAll('#keyboard button').forEach(button => button.disabled = true);
     }
 
     displayWord();
