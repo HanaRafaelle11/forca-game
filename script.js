@@ -23,6 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let attempts = 6;
     let guessedLetters = [];
     let wrongLetters = [];
+
     document.getElementById('hint-text').textContent = selectedCategory;
 
     function displayWord() {
@@ -36,24 +37,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function displayHangman() {
         const stages = [
-            ` ----- \n |     \n |     \n |     \n |     \n |     \n ======== `,
-            ` ----- \n |     \n |     \n |     \n |     \n |     \n |     \n |     \n ======== `,
-            ` ----- \n |     \n |     \n |     \n |     \n |     \n |     \n |     \n ======== `,
-            ` ----- \n |     \n |     \n |     \n |     \n |     \n |     \n |     \n ======== `,
-            ` ----- \n |     \n |     \n |     \n |     \n |     \n |     \n |     \n ======== `,
-            ` ----- \n |     \n |     \n |     \n |     \n |     \n |     \n |     \n ======== `,
-            ` ----- \n |     \n |     \n |     \n |     \n |     \n |     \n |     \n ======== `
+            `\n\n\n\n\n\n\n-----| | \n   \n   \n   \n   \n   \n   =======`,
+            `\n\n\n\n\n-----| | \n   O\n   \n   \n   \n   =======`,
+            `\n\n\n\n-----| | \n   O\n   |\n   \n   \n   =======`,
+            `\n\n\n-----| | \n   O\n   |\\\n   \n   \n   =======`,
+            `\n\n-----| | \n   O\n   |\\\n   |\n   \n   =======`,
+            `\n-----| | \n   O\n   |\\\n   |/\n   \n   =======`,
+            `-----| | \n   O\n   |\\\n   |/\\\n   \n   =======`
         ];
-        const hangmanStages = [
-            ` ----- \n |     \n |     \n |     \n |     \n |     \n |     \n ======== `,
-            ` ----- \n |     \n |     \n |     \n |     \n |     \n |     \n |     \n | O \n ======== `,
-            ` ----- \n |     \n |     \n |     \n |     \n |     \n |     \n |     \n | O \n | | \n ======== `,
-            ` ----- \n |     \n |     \n |     \n |     \n |     \n |     \n |     \n | O \n | | \n | / \n ======== `,
-            ` ----- \n |     \n |     \n |     \n |     \n |     \n |     \n |     \n | O \n | | \n | / \\ \n ======== `,
-            ` ----- \n |     \n |     \n |     \n |     \n |     \n |     \n |     \n | O \n | | \n | / \\ \n | / \n ======== `,
-            ` ----- \n |     \n |     \n |     \n |     \n |     \n |     \n |     \n | O \n | | \n | / \\ \n | / \\ \n ======== `
-        ];
-        document.getElementById('hangman').innerHTML = hangmanStages[6 - attempts];
+        document.getElementById('hangman').textContent = stages[6 - attempts];
     }
 
     function displayKeyboard() {

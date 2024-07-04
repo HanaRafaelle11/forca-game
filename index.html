@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,17 +7,14 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="container">
+    <div id="game-container">
         <h1>Jogo da Forca</h1>
-        <div id="hint">
-            <p id="hint-text"></p>
-        </div>
-        <div id="word"></div>
+        <p id="hint-text"></p>
+        <p id="word"></p>
         <div id="hangman"></div>
-        <div id="attempts">Tentativas restantes: <span id="attempts-count"></span></div>
-        <div id="wrong-letters">Letras erradas:</div>
+        <p id="attempts-count"></p>
+        <p id="wrong-letters"></p>
         <div id="keyboard"></div>
-        <div id="message"></div>
     </div>
     <script src="script.js"></script>
 </body>
