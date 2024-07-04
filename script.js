@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let guessedLetters = [];
     let wrongLetters = [];
 
-    document.getElementById('hint-text').textContent = selectedCategory;
+    document.getElementById('hint-text').textContent = `Categoria: ${selectedCategory}`;
 
     function displayWord() {
         const display = selectedWord.split('').map(letter => (guessedLetters.includes(letter) ? letter : '_')).join(' ');
@@ -37,13 +37,69 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function displayHangman() {
         const stages = [
-            `\n\n\n\n\n\n\n-----| | \n   \n   \n   \n   \n   \n   =======`,
-            `\n\n\n\n\n-----| | \n   O\n   \n   \n   \n   =======`,
-            `\n\n\n\n-----| | \n   O\n   |\n   \n   \n   =======`,
-            `\n\n\n-----| | \n   O\n   |\\\n   \n   \n   =======`,
-            `\n\n-----| | \n   O\n   |\\\n   |\n   \n   =======`,
-            `\n-----| | \n   O\n   |\\\n   |/\n   \n   =======`,
-            `-----| | \n   O\n   |\\\n   |/\\\n   \n   =======`
+            `
+  +---+
+  |   |
+      |
+      |
+      |
+      |
+=========`,
+
+            `
+  +---+
+  |   |
+  O   |
+      |
+      |
+      |
+=========`,
+
+            `
+  +---+
+  |   |
+  O   |
+  |   |
+      |
+      |
+=========`,
+
+            `
+  +---+
+  |   |
+  O   |
+  |\\  |
+      |
+      |
+=========`,
+
+            `
+  +---+
+  |   |
+  O   |
+  |\\  |
+  /    |
+      |
+=========`,
+
+            `
+  +---+
+  |   |
+  O   |
+  |\\  |
+  / \\  |
+      |
+=========`,
+
+            `
+  +---+
+  |   |
+  O   |
+  |\\  |
+  / \\  |
+      |
+=========`,
+
         ];
         document.getElementById('hangman').textContent = stages[6 - attempts];
     }
@@ -51,90 +107,80 @@ document.addEventListener('DOMContentLoaded', () => {
     function displayKeyboard() {
         const keyboardContainer = document.getElementById('keyboard');
         keyboardContainer.innerHTML = '';
-        'abcdefghijklmnopqrstuvwxyz'.split('').forEach(letter => {
-            const button = document.createElement('button');
-            button.textContent = letter;
-            button.addEventListener('click', () => handleGuess(letter, button));
-            keyboardContainer.appendChild(button);
+
+        const letters = 'abcdefghijklmnopqrstuvwxyz'.split('');
+        const rows = [
+            letters.slice(0, 10),
+            letters.slice(10, 19),
+            letters.slice(19)
+        ];
+
+        rows.forEach(row => {
+            const rowDiv = document.createElement('div');
+            rowDiv.className = 'keyboard-row';
+            row.forEach(letter => {
+                const button = document.createElement('button');
+                button.textContent = letter;
+                button.addEventListener('click', () => handleGuess(letter));
+                rowDiv.appendChild(button);
+            });
+            keyboardContainer.appendChild(rowDiv);
         });
-
-        // Dividir o teclado em dois blocos
-        const buttons = Array.from(keyboardContainer.children);
-        const firstHalf = buttons.slice(0, 13);
-        const secondHalf = buttons.slice(13);
-
-        const row1 = document.createElement('div');
-        row1.className = 'keyboard-row';
-        firstHalf.forEach(button => row1.appendChild(button));
-        keyboardContainer.appendChild(row1);
-
-        const row2 = document.createElement('div');
-        row2.className = 'keyboard-row';
-        secondHalf.forEach(button => row2.appendChild(button));
-        keyboardContainer.appendChild(row2);
     }
 
-    function handleGuess(letter, button) {
-        button.disabled = true;
+    function handleGuess(letter) {
         if (selectedWord.includes(letter)) {
             guessedLetters.push(letter);
+            displayWord();
         } else {
-            if (!wrongLetters.includes(letter)) {
-                wrongLetters.push(letter);
-                attempts--;
+            wrongLetters.push(letter);
+            attempts--;
+            displayHangman();
+            if (attempts === 0) {
+                showMessage('Você perdeu! A palavra era: ' + selectedWord, 'red');
+                disableAllButtons();
             }
         }
-        updateGame();
+        updateUI();
     }
 
-    function updateGame() {
-        displayWord();
-        displayHangman();
-        document.getElementById('attempts-count').textContent = attempts;
-        document.getElementById('wrong-letters').textContent = `Letras erradas: ${wrongLetters.join(', ')}`;
-        if (attempts === 0) {
-            showMessage(`Você perdeu! A palavra era "${selectedWord}".`, 'red');
-            disableAllButtons();
-        }
+    function updateUI() {
+        document.getElementById('wrong-letters').textContent = 'Letras erradas: ' + wrongLetters.join(', ');
+        document.getElementById('attempts-count').textContent = 'Tentativas restantes: ' + attempts;
+        displayKeyboard();
     }
 
     function disableAllButtons() {
-        document.querySelectorAll('#keyboard button').forEach(button => button.disabled = true);
+        const buttons = document.querySelectorAll('#keyboard button');
+        buttons.forEach(button => button.disabled = true);
     }
 
     function showMessage(message, color) {
-        const messageContainer = document.createElement('div');
-        messageContainer.textContent = message;
-        messageContainer.className = 'message-popup';
-        messageContainer.style.backgroundColor = color;
-        document.body.appendChild(messageContainer);
+        const popup = document.createElement('div');
+        popup.className = 'message-popup';
+        popup.style.backgroundColor = color;
+        popup.textContent = message;
 
         const restartButton = document.createElement('button');
-        restartButton.textContent = 'Jogue de novo';
+        restartButton.textContent = 'Jogar de novo';
         restartButton.className = 'restart-button';
-        restartButton.addEventListener('click', () => {
-            document.body.removeChild(messageContainer);
-            resetGame();
-        });
-        messageContainer.appendChild(restartButton);
+        restartButton.addEventListener('click', () => location.reload());
+        popup.appendChild(restartButton);
+
+        document.body.appendChild(popup);
     }
 
-    function resetGame() {
+    function startGame() {
         selectedCategory = categories[Math.floor(Math.random() * categories.length)];
         selectedWord = words[selectedCategory][Math.floor(Math.random() * words[selectedCategory].length)];
         attempts = 6;
         guessedLetters = [];
         wrongLetters = [];
-        document.getElementById('hint-text').textContent = selectedCategory;
-        document.getElementById('message').textContent = '';
+        document.getElementById('hint-text').textContent = `Categoria: ${selectedCategory}`;
         displayWord();
         displayHangman();
-        displayKeyboard();
-        document.getElementById('wrong-letters').textContent = '';
-        document.getElementById('attempts-count').textContent = attempts;
+        updateUI();
     }
 
-    displayWord();
-    displayHangman();
-    displayKeyboard();
+    startGame();
 });

@@ -1,69 +1,35 @@
-/* Estilo geral do corpo */
+/* Estilo geral do corpo da página */
 body {
     font-family: Arial, sans-serif;
     background-color: #f0f0f0;
     color: #333;
-    text-align: center;
-    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
 }
 
 /* Estilo do contêiner do jogo */
 #game-container {
+    text-align: center;
     background-color: #fff;
     border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     padding: 20px;
-    display: inline-block;
-    margin-top: 20px;
+    width: 300px;
 }
 
-/* Estilo da palavra exibida */
-#word {
-    font-size: 24px;
-    letter-spacing: 5px;
+/* Estilo do texto da dica */
+#hint-text {
+    font-size: 18px;
     margin-bottom: 10px;
 }
 
-/* Estilo da contagem de tentativas */
-#attempts-count {
-    font-size: 20px;
-    color: #555;
-}
-
-/* Estilo das letras erradas */
-#wrong-letters {
-    font-size: 18px;
-    color: red;
-}
-
-/* Estilo do teclado */
-#keyboard {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    margin-top: 20px;
-}
-
-.keyboard-row {
-    display: flex;
-    justify-content: center;
-}
-
-#keyboard button {
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    padding: 10px;
-    margin: 5px;
-    font-size: 18px;
-    cursor: pointer;
-}
-
-#keyboard button:disabled {
-    background-color: #ddd;
-    color: #aaa;
-    cursor: not-allowed;
+/* Estilo da palavra */
+#word {
+    font-size: 24px;
+    margin-bottom: 20px;
 }
 
 /* Estilo do boneco da forca */
@@ -72,29 +38,77 @@ body {
     white-space: pre;
     margin-top: 20px;
     font-size: 24px;
+    line-height: 1.5;
+    background-color: #f8f9fa;
+    border: 2px solid #ddd;
+    padding: 10px;
+    border-radius: 5px;
+    display: inline-block;
 }
 
-/* Estilo da mensagem */
-.message-popup {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    padding: 20px;
-    border-radius: 10px;
-    z-index: 1000;
-    color: #fff;
+/* Estilo das letras erradas */
+#wrong-letters {
+    margin-top: 10px;
     font-size: 18px;
+}
+
+/* Estilo do contador de tentativas */
+#attempts-count {
+    margin-top: 10px;
+    font-size: 18px;
+}
+
+/* Estilo do teclado */
+#keyboard {
+    margin-top: 20px;
+}
+
+/* Estilo das linhas do teclado */
+.keyboard-row {
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+    margin-bottom: 5px;
+}
+
+/* Estilo dos botões do teclado */
+#keyboard button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+    cursor: pointer;
+}
+
+#keyboard button:disabled {
+    background-color: #6c757d;
+    cursor: not-allowed;
 }
 
 /* Estilo do botão de reinício */
 .restart-button {
     margin-top: 10px;
+    padding: 10px;
     background-color: #28a745;
-    border: none;
     color: #fff;
-    padding: 10px 20px;
-    font-size: 16px;
-    cursor: pointer;
+    border: none;
     border-radius: 5px;
+    cursor: pointer;
+}
+
+.restart-button:hover {
+    background-color: #218838;
+}
+
+/* Estilo do popup de mensagem */
+.message-popup {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 20px;
+    border-radius: 10px;
+    color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
