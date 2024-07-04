@@ -118,7 +118,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const buttons = Array.from(keyboardContainer.children);
         const firstHalf = buttons.slice(0, 13);
         const secondHalf = buttons.slice(13);
-        
+
         const row1 = document.createElement('div');
         row1.className = 'keyboard-row';
         firstHalf.forEach(button => row1.appendChild(button));
