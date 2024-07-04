@@ -22,6 +22,15 @@ h1 {
     margin-bottom: 10px;
 }
 
+#hint {
+    margin-bottom: 10px;
+}
+
+#hint-text {
+    font-size: 18px;
+    font-weight: bold;
+}
+
 #word {
     font-size: 24px;
     letter-spacing: 4px;
