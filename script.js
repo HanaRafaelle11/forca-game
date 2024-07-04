@@ -1,101 +1,140 @@
 document.addEventListener('DOMContentLoaded', () => {
     const words = {
-        'Animais': ['cachorro', 'gato', 'elefante', 'girafa', 'tigre', 'leão', 'macaco', 'urso', 'baleia', 'tubarão', 'passarinho', 'tartaruga', 'cavalo', 'peixe', 'cobra', 'sapo', 'rato', 'pato', 'galinha', 'boi'],
-        'Comidas e Bebidas': ['maçã', 'banana', 'cenoura', 'bolo', 'feijoada', 'lasanha', 'pão', 'pizza', 'arroz', 'feijão', 'suco', 'refrigerante'],
-        'Cores': ['vermelho', 'azul', 'amarelo', 'verde', 'laranja', 'roxo', 'rosa', 'preto', 'branco', 'cinza', 'marrom'],
-        'Cidades e Países': ['são paulo', 'rio de janeiro', 'brasil', 'argentina', 'alemanha', 'frança', 'portugal', 'japão', 'china', 'egito', 'londres'],
-        'Profissões': ['médico', 'advogado', 'professor', 'engenheiro', 'enfermeiro', 'policial', 'bombeiro', 'dentista', 'arquiteto'],
-        'Esportes': ['futebol', 'basquete', 'vôlei', 'natação', 'tênis', 'boxe', 'ciclismo', 'corrida', 'surfe'],
-        'Marcas': ['nike', 'adidas', 'apple', 'samsung', 'honda', 'toyota', 'ford', 'chevrolet', 'puma', 'gucci', 'prada'],
-        'Famosos': ['beyoncé', 'brad pitt', 'angelina jolie', 'madonna', 'michael jackson', 'elvis presley', 'bill gates', 'steve jobs'],
-        'Personagens': ['batman', 'superman', 'spiderman', 'harry potter', 'hermione', 'frodo', 'aragorn', 'sherlock holmes'],
-        'História': ['napoleão', 'cleópatra', 'hitler', 'gandhi', 'martin luther king', 'maomé', 'lenin', 'winston churchill']
+      'Animais': ['cachorro', 'gato', 'elefante', 'girafa', 'tigre', 'leão', 'macaco', 'urso', 'baleia', 'tubarão', 'passarinho', 'tartaruga', 'cavalo', 'peixe', 'cobra', 'sapo', 'rato', 'pato', 'galinha', 'boi'],
+      'Comidas e Bebidas': ['maçã', 'banana', 'cenoura', 'bolo', 'feijoada', 'lasanha', 'pão', 'pizza', 'arroz', 'feijão', 'suco', 'refrigerante'],
+      'Cores': ['vermelho', 'azul', 'amarelo', 'verde', 'laranja', 'roxo', 'rosa', 'preto', 'branco', 'cinza', 'marrom'],
+      'Cidades e Países': ['são paulo', 'rio de janeiro', 'brasil', 'argentina', 'alemanha', 'frança', 'portugal', 'japão', 'china', 'egito', 'londres'],
+      'Profissões': ['médico', 'advogado', 'professor', 'engenheiro', 'enfermeiro', 'policial', 'bombeiro', 'dentista', 'arquiteto'],
+      'Esportes': ['futebol', 'basquete', 'vôlei', 'natação', 'tênis', 'boxe', 'ciclismo', 'corrida', 'surfe'],
+      'Marcas': ['nike', 'adidas', 'apple', 'samsung', 'honda', 'toyota', 'ford', 'chevrolet', 'puma', 'gucci', 'prada'],
+      'Famosos': ['beyoncé', 'brad pitt', 'angelina jolie', 'madonna', 'michael jackson', 'elvis presley', 'bill gates', 'steve jobs'],
+      'Personagens': ['batman', 'superman', 'spiderman', 'harry potter', 'hermione', 'frodo', 'aragorn', 'sherlock holmes'],
+      'História': ['napoleão', 'cleópatra', 'hitler', 'gandhi', 'martin luther king', 'abraham lincoln', 'joana d\'arc'],
+      'Ciência': ['física', 'química', 'biologia', 'astronomia', 'geologia', 'genética', 'evolução', 'gravidade'],
+      'Geografia': ['atlântico', 'pacífico', 'himalaia', 'everest', 'nilo', 'amazonas', 'sahara', 'andés'],
+      'Mitologia': ['zeus', 'hera', 'poseidon', 'hades', 'apolo', 'atena', 'hercules', 'perseu'],
+      'Festa Junina': ['canjica', 'pamonha', 'quadrilha', 'pescaria', 'fogos', 'balão', 'milho'],
+      'Natal': ['papai noel', 'presente', 'árvore', 'presépio', 'panetone', 'ceia', 'sino', 'estrela']
     };
-
-    let chosenCategory;
-    let chosenWord;
-    let wordLetters;
+  
+    const categories = Object.keys(words);
+    let selectedCategory = categories[Math.floor(Math.random() * categories.length)];
+    let selectedWord = words[selectedCategory][Math.floor(Math.random() * words[selectedCategory].length)];
+    let attempts = 6;
+    let guessedLetters = [];
     let wrongLetters = [];
-    let remainingAttempts = 6;
-
-    function getRandomWord() {
-        const categories = Object.keys(words);
-        chosenCategory = categories[Math.floor(Math.random() * categories.length)];
-        const wordList = words[chosenCategory];
-        chosenWord = wordList[Math.floor(Math.random() * wordList.length)];
-        wordLetters = [...chosenWord];
-        return chosenWord;
-    }
-
+  
+    document.getElementById('hint-text').textContent = `Categoria: ${selectedCategory}`;
+  
     function displayWord() {
-        const wordDisplay = wordLetters.map(letter => {
-            if (letter === ' ') return '&nbsp;';
-            return wrongLetters.includes(letter) || document.getElementById('wrong-letters').textContent.includes(letter) ? letter : '_';
-        }).join(' ');
-        document.getElementById('word').innerHTML = wordDisplay;
+      const display = selectedWord.split('').map(letter => (guessedLetters.includes(letter) ? letter : '_')).join(' ');
+      document.getElementById('word').textContent = display;
+      if (!display.includes('_')) {
+        showMessage('Parabéns, você ganhou!', 'green');
+        disableAllButtons();
+      }
     }
-
+  
     function displayHangman() {
-        const stages = [
-            '-----\n|   |\n    \n    \n    \n    \n    \n    \n=========\n',
-            '-----\n|   |\nO   \n    \n    \n    \n    \n    \n=========\n',
-            '-----\n|   |\nO   \n|   \n    \n    \n    \n    \n=========\n',
-            '-----\n|   |\nO   \n|/  \n    \n    \n    \n    \n=========\n',
-            '-----\n|   |\nO   \n|/\\ \n    \n    \n    \n    \n=========\n',
-            '-----\n|   |\nO   \n|/\\ \n/   \n    \n    \n    \n=========\n',
-            '-----\n|   |\nO   \n|/\\ \n/ \\ \n    \n    \n    \n=========\n'
-        ];
-        document.getElementById('hangman').textContent = stages[6 - remainingAttempts];
+      const stages = [
+        `+---+\n|   |\n|   \n|   \n|   \n|   \n========`,
+        `+---+\n|   |\n|   O\n|   \n|   \n|   \n========`,
+        `+---+\n|   |\n|   O\n|   |\n|   \n|   \n========`,
+        `+---+\n|   |\n|   O\n|  /|\n|   \n|   \n========`,
+        `+---+\n|   |\n|   O\n|  /|\\\n|   \n|   \n========`,
+        `+---+\n|   |\n|   O\n|  /|\\\n|  / \n|   \n========`,
+        `+---+\n|   |\n|   O\n|  /|\\\n|  / \\\n|   \n========`
+      ];
+      document.getElementById('hangman').textContent = stages[6 - attempts];
     }
-
-    function displayAttempts() {
-        document.getElementById('attempts-count').textContent = `Tentativas restantes: ${remainingAttempts}`;
+  
+    function displayKeyboard() {
+      const keyboardContainer = document.getElementById('keyboard');
+      keyboardContainer.innerHTML = '';
+      'abcdefghijklmnopqrstuvwxyz'.split('').forEach(letter => {
+        const button = document.createElement('button');
+        button.textContent = letter;
+        button.addEventListener('click', () => handleGuess(letter, button));
+        keyboardContainer.appendChild(button);
+      });
+  
+      // Dividir o teclado em dois blocos
+      const buttons = Array.from(keyboardContainer.children);
+      const firstHalf = buttons.slice(0, 13);
+      const secondHalf = buttons.slice(13);
+  
+      const row1 = document.createElement('div');
+      row1.className = 'keyboard-row';
+      firstHalf.forEach(button => row1.appendChild(button));
+      keyboardContainer.appendChild(row1);
+  
+      const row2 = document.createElement('div');
+      row2.className = 'keyboard-row';
+      secondHalf.forEach(button => row2.appendChild(button));
+      keyboardContainer.appendChild(row2);
     }
-
-    function displayWrongLetters() {
-        document.getElementById('wrong-letters').textContent = `Letras erradas: ${wrongLetters.join(', ')}`;
-    }
-
-    function handleKeyPress(e) {
-        if (remainingAttempts > 0 && !wordLetters.every(letter => wrongLetters.includes(letter))) {
-            const letter = e.key.toLowerCase();
-            if (!wrongLetters.includes(letter) && chosenWord.includes(letter)) {
-                wordLetters.forEach((l, i) => {
-                    if (l === letter) {
-                        wordLetters[i] = letter;
-                    }
-                });
-            } else if (!wrongLetters.includes(letter)) {
-                wrongLetters.push(letter);
-                remainingAttempts--;
-            }
-            displayWord();
-            displayHangman();
-            displayAttempts();
-            displayWrongLetters();
+  
+    function handleGuess(letter, button) {
+      button.disabled = true;
+      if (selectedWord.includes(letter)) {
+        guessedLetters.push(letter);
+      } else {
+        if (!wrongLetters.includes(letter)) {
+          wrongLetters.push(letter);
+          attempts--;
         }
+      }
+      updateGame();
     }
-
-    function setupKeyboard() {
-        const keyboardContainer = document.getElementById('keyboard');
-        keyboardContainer.innerHTML = '';
-        const letters = 'abcdefghijklmnopqrstuvwxyz'.split('');
-        letters.forEach(letter => {
-            const button = document.createElement('button');
-            button.textContent = letter;
-            button.addEventListener('click', () => handleKeyPress({ key: letter }));
-            keyboardContainer.appendChild(button);
-        });
+  
+    function updateGame() {
+      displayWord();
+      displayHangman();
+      document.getElementById('attempts-count').textContent = `Tentativas restantes: ${attempts}`;
+      document.getElementById('wrong-letters').textContent = `Letras erradas: ${wrongLetters.join(', ')}`;
+      if (attempts === 0) {
+        showMessage(`Você perdeu! A palavra era "${selectedWord}".`, 'red');
+        disableAllButtons();
+      }
     }
-
-    function startGame() {
-        getRandomWord();
-        displayWord();
-        displayHangman();
-        displayAttempts();
-        displayWrongLetters();
-        setupKeyboard();
+  
+    function disableAllButtons() {
+      document.querySelectorAll('#keyboard button').forEach(button => button.disabled = true);
     }
-
-    startGame();
-});
+  
+    function showMessage(message, color) {
+      const messageContainer = document.createElement('div');
+      messageContainer.textContent = message;
+      messageContainer.className = 'message-popup';
+      messageContainer.style.backgroundColor = color;
+      document.body.appendChild(messageContainer);
+      const restartButton = document.createElement('button');
+      restartButton.textContent = 'Jogue de novo';
+      restartButton.className = 'restart-button';
+      restartButton.addEventListener('click', () => {
+        document.body.removeChild(messageContainer);
+        resetGame();
+      });
+      messageContainer.appendChild(restartButton);
+    }
+  
+    function resetGame() {
+      selectedCategory = categories[Math.floor(Math.random() * categories.length)];
+      selectedWord = words[selectedCategory][Math.floor(Math.random() * words[selectedCategory].length)];
+      attempts = 6;
+      guessedLetters = [];
+      wrongLetters = [];
+      document.getElementById('hint-text').textContent = `Categoria: ${selectedCategory}`;
+      document.getElementById('message').textContent = '';
+      displayWord();
+      displayHangman();
+      displayKeyboard();
+      document.getElementById('wrong-letters').textContent = '';
+      document.getElementById('attempts-count').textContent = `Tentativas restantes: ${attempts}`;
+    }
+  
+    displayWord();
+    displayHangman();
+    displayKeyboard();
+  });
+  
