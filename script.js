@@ -17,6 +17,11 @@ document.addEventListener('DOMContentLoaded', () => {
         'Natal': ['papai noel', 'presente', 'árvore', 'presépio', 'panetone', 'ceia', 'sino', 'estrela']
     };
 
+    // Remove palavras compostas (com espaços)
+    for (const category in words) {
+        words[category] = words[category].filter(word => !word.includes(' '));
+    }
+
     const categories = Object.keys(words);
     let selectedCategory = categories[Math.floor(Math.random() * categories.length)];
     let selectedWord = words[selectedCategory][Math.floor(Math.random() * words[selectedCategory].length)];
@@ -27,8 +32,10 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('hint-text').textContent = selectedCategory;
 
     function displayWord() {
-        const display = selectedWord.split('').map(letter => (letter === ' ' ? ' ' : (guessedLetters.includes(letter) ? letter : '_'))).join(' ');
+        const display = selectedWord.split('').map(letter => (guessedLetters.includes(letter) ? letter : '_')).join(' ');
         document.getElementById('word').textContent = display;
+
+        // Verificação de vitória
         if (display.replace(/\s+/g, '') === selectedWord) {
             showMessage('Parabéns, você ganhou!', 'green');
             disableAllButtons();
@@ -118,51 +125,58 @@ document.addEventListener('DOMContentLoaded', () => {
         const buttons = Array.from(keyboardContainer.children);
         const firstHalf = buttons.slice(0, 13);
         const secondHalf = buttons.slice(13);
-
-        // Criar duas linhas para o teclado
-        const firstRow = document.createElement('div');
-        firstRow.classList.add('keyboard-row');
-        firstHalf.forEach(button => firstRow.appendChild(button));
-        keyboardContainer.appendChild(firstRow);
-
-        const secondRow = document.createElement('div');
-        secondRow.classList.add('keyboard-row');
-        secondHalf.forEach(button => secondRow.appendChild(button));
-        keyboardContainer.appendChild(secondRow);
+        const row1 = document.createElement('div');
+        row1.className = 'keyboard-row';
+        firstHalf.forEach(button => row1.appendChild(button));
+        keyboardContainer.appendChild(row1);
+        const row2 = document.createElement('div');
+        row2.className = 'keyboard-row';
+        secondHalf.forEach(button => row2.appendChild(button));
+        keyboardContainer.appendChild(row2);
     }
 
     function handleGuess(letter, button) {
         button.disabled = true;
         if (selectedWord.includes(letter)) {
             guessedLetters.push(letter);
-            displayWord();
         } else {
-            wrongLetters.push(letter);
-            attempts--;
-            displayHangman();
-            document.getElementById('attempts-count').textContent = attempts;
-            document.getElementById('wrong-letters').textContent = `Letras erradas: ${wrongLetters.join(' ')}`;
-            if (attempts === 0) {
-                showMessage('Você perdeu! A palavra era: ' + selectedWord, 'red');
-                disableAllButtons();
+            if (!wrongLetters.includes(letter)) {
+                wrongLetters.push(letter);
+                attempts--;
             }
         }
+        updateGame();
     }
 
-    function showMessage(message, color) {
-        const messageDiv = document.createElement('div');
-        messageDiv.classList.add('message-popup');
-        messageDiv.style.backgroundColor = color;
-        messageDiv.textContent = message;
-        document.body.appendChild(messageDiv);
-
-        setTimeout(() => {
-            document.body.removeChild(messageDiv);
-        }, 3000);
+    function updateGame() {
+        displayWord();
+        displayHangman();
+        document.getElementById('attempts-count').textContent = attempts;
+        document.getElementById('wrong-letters').textContent = `Letras erradas: ${wrongLetters.join(', ')}`;
+        if (attempts === 0) {
+            showMessage(`Você perdeu! A palavra era "${selectedWord}".`, 'red');
+            disableAllButtons();
+        }
     }
 
     function disableAllButtons() {
         document.querySelectorAll('#keyboard button').forEach(button => button.disabled = true);
+    }
+
+    function showMessage(message, color) {
+        const messageContainer = document.createElement('div');
+        messageContainer.textContent = message;
+        messageContainer.className = 'message-popup';
+        messageContainer.style.backgroundColor = color;
+        document.body.appendChild(messageContainer);
+        const restartButton = document.createElement('button');
+        restartButton.textContent = 'Jogue de novo';
+        restartButton.className = 'restart-button';
+        restartButton.addEventListener('click', () => {
+            document.body.removeChild(messageContainer);
+            resetGame();
+        });
+        messageContainer.appendChild(restartButton);
     }
 
     function resetGame() {
@@ -172,22 +186,15 @@ document.addEventListener('DOMContentLoaded', () => {
         guessedLetters = [];
         wrongLetters = [];
         document.getElementById('hint-text').textContent = selectedCategory;
-        document.getElementById('attempts-count').textContent = attempts;
-        document.getElementById('wrong-letters').textContent = 'Letras erradas:';
+        document.getElementById('message').textContent = '';
         displayWord();
         displayHangman();
         displayKeyboard();
-        document.getElementById('message').textContent = '';
+        document.getElementById('wrong-letters').textContent = '';
+        document.getElementById('attempts-count').textContent = attempts;
     }
 
     displayWord();
     displayHangman();
     displayKeyboard();
-
-    // Adicionando o botão "Jogue de novo"
-    const restartButton = document.createElement('button');
-    restartButton.textContent = 'Jogue de novo';
-    restartButton.classList.add('restart-button');
-    restartButton.addEventListener('click', resetGame);
-    document.body.appendChild(restartButton);
 });
