@@ -27,9 +27,9 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('hint-text').textContent = selectedCategory;
 
     function displayWord() {
-        const display = selectedWord.split('').map(letter => (guessedLetters.includes(letter) ? letter : '_')).join(' ');
+        const display = selectedWord.split('').map(letter => (letter === ' ' ? ' ' : (guessedLetters.includes(letter) ? letter : '_'))).join(' ');
         document.getElementById('word').textContent = display;
-        if (!display.includes('_')) {
+        if (display.replace(/\s+/g, '') === selectedWord) {
             showMessage('Parabéns, você ganhou!', 'green');
             disableAllButtons();
         }
